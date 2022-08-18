@@ -4,6 +4,7 @@ import Header from '../components/Header';
 import Content from '../components/Content';
 import Footer from '../components/Footer';
 import {tasks} from '../services/tasksService';
+import {TaskContext} from '../context/TaskContext';
 export default function HomeScreen() {
   const [tasksList, setTasksList] = useState([]);
   useEffect(() => {
@@ -19,10 +20,17 @@ export default function HomeScreen() {
     setTasksList([...beforeTask, task, ...endTask]);
   };
   return (
-    <View>
-      <Header tasks={tasks} />
-      <Content tasks={tasks} handleChange={handleChange} />
-      <Footer tasks={tasks} />
-    </View>
+    <TaskContext.Provider
+      value={{
+        tasks,
+        handleChange,
+      }}
+    >
+      <View>
+        <Header />
+        <Content />
+        <Footer />
+      </View>
+    </TaskContext.Provider>
   );
 }

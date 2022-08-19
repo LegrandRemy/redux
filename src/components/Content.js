@@ -1,15 +1,32 @@
-import {View, Text, FlatList, TouchableOpacity, StyleSheet} from 'react-native';
+import {
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  StyleSheet,
+  Button,
+} from 'react-native';
 import React, {useContext} from 'react';
-import Button from './Button';
-import {TaskContext} from '../context/TaskContext';
+import CustomButton from './Button';
+// import {TaskContext} from '../context/TaskContext';
+import {useSelector, useDispatch} from 'react-redux';
+import {deleteTask} from '../redux/taskSlice';
 
 export default function Content() {
-  const contextTask = useContext(TaskContext);
-  const {tasks} = contextTask;
+  const tasks = useSelector(state => state.tasks);
+  const dispatch = useDispatch();
+  // const contextTask = useContext(TaskContext);
+  // const {tasks} = contextTask;
   const renderItem = ({item}) => (
     <View style={styles.itemWrapper}>
       <Text>{item.title}</Text>
-      <Button completed={item.completed} id={item.id} />
+      <CustomButton completed={item.completed} id={item.id} />
+      <Button
+        title="Delete"
+        onPress={() => {
+          dispatch(deleteTask(item.id));
+        }}
+      />
     </View>
   );
   return (

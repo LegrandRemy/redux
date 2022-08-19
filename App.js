@@ -1,7 +1,12 @@
-import {View, Text} from 'react-native';
 import React from 'react';
 import HomeScreen from './src/screens/HomeScreen';
+import {Provider} from 'react-redux';
+import {store} from './src/redux/store';
 
 export default function App() {
-  return <HomeScreen />;
+  return (
+    <Provider store={store}>
+      <HomeScreen />
+    </Provider>
+  );
 }

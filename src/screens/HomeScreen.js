@@ -1,10 +1,12 @@
-import {View, Text} from 'react-native';
+import {View, Text, TouchableOpacity} from 'react-native';
 import React, {useEffect, useState, Provider} from 'react';
 import Header from '../components/Header';
 import Content from '../components/Content';
 import Footer from '../components/Footer';
 import {tasks} from '../services/tasksService';
 import {TaskContext} from '../context/TaskContext';
+import {useSelector, useDispatch} from 'react-redux';
+import {addTask} from '../redux/taskSlice';
 export default function HomeScreen() {
   const [tasksList, setTasksList] = useState([]);
   useEffect(() => {
@@ -19,6 +21,11 @@ export default function HomeScreen() {
     const endTask = tasksList.slice(taskIndex + 1);
     setTasksList([...beforeTask, task, ...endTask]);
   };
+  const stateValue = useSelector(state => state.task);
+
+  const dispatch = useDispatch();
+
+  console.log(stateValue);
   return (
     <TaskContext.Provider
       value={{
@@ -30,6 +37,24 @@ export default function HomeScreen() {
         <Header />
         <Content />
         <Footer />
+        <TouchableOpacity
+          style={{
+            backgroundColor: 'blue',
+            paddingHorizontal: 15,
+            paddingVertical: 8,
+          }}
+          onPress={() => {
+            dispatch(
+              addTask({
+                id: 3,
+                title: 'task3',
+                completed: false,
+              }),
+            );
+          }}
+        >
+          <Text>Ajouter une tâche</Text>
+        </TouchableOpacity>
       </View>
     </TaskContext.Provider>
   );
